@@ -1,0 +1,44 @@
+# Shortcuts
+alias aliasconfig="vi ~/.aliases"
+alias reloadcli="source $HOME/.zshrc"
+
+# Directories
+alias dotfiles="cd $DOTFILES"
+alias library="cd $HOME/Library"
+alias sites="cd $HOME/Sites"
+
+# Laravel
+alias pa="php artisan"
+alias tinker="php artisan tinker"
+alias phpunit="vendor/phpunit/phpunit/phpunit"
+
+# PHP
+alias cfresh="rm -rf vendor/ composer.lock && composer i"
+
+# JS
+alias nfresh="rm -rf node_modules/ package-lock.json && npm install"
+alias watch="npm run watch"
+
+# Git
+alias gc="git commit -m "
+alias gs="git status"
+alias gsid="git show"
+alias gl="git log"
+alias gcom="git checkout master"
+alias gnb="git checkout -b"
+alias gp="git push"
+alias nah="git reset --hard && git clean -df"
+alias glog="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+
+# CRON
+alias addcron="crontab ~/.cronjobs"
+alias editcron="vi ~/.cronjobs"
+alias viewcron="crontab -l"
+alias removecron="crontab -r"
+
+# System
+alias updatemac="brew update && brew upgrade && mas upgrade && n latest && npm i -g npm && softwareupdate -i -a"
+
+# Hash
+alias computesha256='openssl dgst -sha256'
+alias computesha512='openssl dgst -sha512'
