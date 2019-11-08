@@ -64,9 +64,10 @@ cask 'font-source-sans-pro'
 cask 'font-source-serif-pro'
 
 # Mac App Store
-mas 'LastPass Password Manager', id: 926036361
 mas 'Giphy Capture', id: 668208984
 mas 'Keynote', id: 409183694
+mas 'LastPass', id: 926036361
+mas 'NordVPN', id: 1116599239
 mas 'Spark - Email App by Readdle', id: 1176895641
 mas 'The Unarchiver', id: 425424353
 mas 'Tweetbot', id: 1384080005
