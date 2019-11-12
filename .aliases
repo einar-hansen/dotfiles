@@ -1,5 +1,6 @@
 # Shortcuts
 alias aliasconfig="vi ~/.aliases"
+alias copyssh="pbcopy < $HOME/.ssh/id_rsa.pub"
 alias reloadcli="source $HOME/.zshrc"
 
 # Directories
@@ -9,6 +10,7 @@ alias sites="cd $HOME/Sites"
 
 # Laravel
 alias pa="php artisan"
+alias pams="php artisan migrate:fresh --seed"
 alias tinker="php artisan tinker"
 alias phpunit="vendor/phpunit/phpunit/phpunit"
 
@@ -21,9 +23,10 @@ alias watch="npm run watch"
 
 # Git
 alias gc="git commit -m "
+alias gac="git add . && git commit --no-edit"
 alias gs="git status"
 alias gsid="git show"
-alias gl="git log"
+alias gl="git log --oneline --decorate --color"
 alias gcom="git checkout master"
 alias gnb="git checkout -b"
 alias gp="git push"
