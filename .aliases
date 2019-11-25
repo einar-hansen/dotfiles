@@ -40,7 +40,8 @@ alias viewcron="crontab -l"
 alias removecron="crontab -r"
 
 # System
-alias updatemac="brew update && brew upgrade && mas upgrade && n latest && npm i -g npm && softwareupdate -i -a"
+alias updatemac="brew update && brew upgrade && brew cleanup && brew cask cleanup &&
+brew update && mas upgrade && n latest && npm i -g npm && softwareupdate -i -a"
 
 # Hash
 alias computesha256='openssl dgst -sha256'

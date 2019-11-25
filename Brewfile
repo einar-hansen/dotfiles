@@ -6,13 +6,17 @@ tap 'homebrew/cask-versions'
 tap 'homebrew/bundle'
 
 # Binaries
+brew 'ack' # Latest Bash version
+brew 'awk' # Latest Bash version
 brew 'bash' # Latest Bash version
 brew 'bat' # "cat" on steroids
 brew 'coreutils' # Those that come with macOS are outdated
+brew 'fzf'
 brew 'git'
 brew 'gnupg2'
 brew 'grep'
 brew 'httpie'
+brew 'jq'
 brew 'hub'
 brew 'imap-uw'
 brew 'mackup'
