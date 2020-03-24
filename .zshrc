@@ -90,9 +90,5 @@ source $DOTFILES/.aliases
 source $DOTFILES/.helpers
 source $DOTFILES/path.zsh
 
-if [[ -f $home/.aliases ]]; then
-    source $home/.aliases
-fi
-
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f $HOME/.aliases ] && source $HOME/.aliases
+[ -f $HOME/.fzf.zsh ] && source $HOME/.fzf.zsh
