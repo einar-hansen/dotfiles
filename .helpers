@@ -1,0 +1,13 @@
+togif() {
+    input="$1"
+    output="$2"
+    if [[ -z "$input" ]]
+    then
+        echo "Please set \$input"
+    elif [[ -z "$output" ]]
+    then
+        echo "Please set \$output"
+    else
+        ffmpeg -i "$input" -s 600x400 -pix_fmt rgb24 -r 10 -f gif - | gifsicle --optimize=3 --delay=3 > "$output"
+    fi
+}

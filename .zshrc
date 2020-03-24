@@ -87,6 +87,7 @@ export LANG=en_US.UTF-8
 # Example aliases
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 source $DOTFILES/.aliases
+source $DOTFILES/.helpers
 source $DOTFILES/path.zsh
 
 if [[ -f $home/.aliases ]]; then
