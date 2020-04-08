@@ -11,3 +11,28 @@ togif() {
         ffmpeg -i "$input" -s 600x400 -pix_fmt rgb24 -r 10 -f gif - | gifsicle --optimize=3 --delay=3 > "$output"
     fi
 }
+
+
+updatemac(){
+    echo "- Running \"brew update\"..."
+
+    update=`brew update`
+
+    if [[ "$update" == "Already up-to-date." ]]
+    then
+        echo "- No updates"
+
+        echo "- Cleaning up old brew files..."
+        cleanup=`brew cleanup`
+
+        echo "- Updating Mac App Store apps..."
+        mas upgrade
+
+        echo "- Checking for new Apple updates..."
+        softwareupdate -i -a
+    else
+        echo "- Updating brew files..."
+        brew upgrade
+        updatemac
+    fi
+}

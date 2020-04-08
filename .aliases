@@ -39,10 +39,6 @@ alias editcron="vi ~/.cronjobs"
 alias viewcron="crontab -l"
 alias removecron="crontab -r"
 
-# System
-alias updatemac="brew update && brew upgrade && brew cleanup &&
-brew update && mas upgrade && softwareupdate -i -a"
-
 # Hash
 alias computesha256='openssl dgst -sha256'
 alias computesha512='openssl dgst -sha512'
