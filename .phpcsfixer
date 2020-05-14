@@ -1,22 +1,22 @@
 <?php
 
-file_put_contents('/Users/sk/.dotfiles/test.txt', 'hei');
-
 return PhpCsFixer\Config::create()
-    ->setUsingCache(true)
     ->setRules([
         '@PSR2' => true,
+        // Unsure of
         'explicit_indirect_variable' => true,
+
+        // 'class_attributes_separation' => true,
         'array_syntax' => [
-            'syntax' => 'short',
+            'syntax' => 'short'
         ],
         'class_definition' => true,
         'blank_line_before_statement' => true,
         'class_attributes_separation' => [
-            'elements' => ['method'],
+            'elements' => ['method']
         ],
         'concat_space' => [
-            'spacing' => 'none',
+            'spacing' => 'none'
         ],
         'elseif' => true,
         'explicit_string_variable' => true,
@@ -38,11 +38,12 @@ return PhpCsFixer\Config::create()
         'no_whitespace_in_blank_line' => true,
         'object_operator_without_whitespace' => true,
         'ordered_imports' => [
-            'sort_algorithm' => 'length',
+            'sort_algorithm' => 'length'
         ],
         'php_unit_method_casing' => [
-            'case' => 'snake_case',
+            'case' => 'snake_case'
         ],
+        //'psr4' => true,
         'short_scalar_cast' => true,
         'single_blank_line_before_namespace' => true,
         'single_blank_line_at_eof' => true,
@@ -53,5 +54,5 @@ return PhpCsFixer\Config::create()
         'standardize_not_equals' => true,
         'trailing_comma_in_multiline_array' => true,
         'trim_array_spaces' => true,
-        'whitespace_after_comma_in_array' => true,
+        'whitespace_after_comma_in_array' => true
     ]);
