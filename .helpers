@@ -28,6 +28,9 @@ updatemac(){
         echo "- Updating Mac App Store apps..."
         mas upgrade
 
+        echo "- Updating Composer Globally..."
+        composer global update
+
         echo "- Checking for new Apple updates..."
         softwareupdate -i -a
     else
@@ -35,4 +38,18 @@ updatemac(){
         brew upgrade
         updatemac
     fi
+}
+
+gacp() {
+    input="$1"
+    git add --all
+    if [ "$input" = "" ]
+    then
+        # echo "No message"
+        git commit -m "Quick commit"
+    else
+        # echo "Commit with message $input"
+        git commit -m "$input"
+    fi
+    git push
 }

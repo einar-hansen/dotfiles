@@ -1,6 +1,6 @@
 # Path to your dotfiles.
 export DOTFILES=$HOME/.dotfiles
-export PATH="/usr/local/sbin:$PATH"
+export PATH="/usr/local/sbin:$HOME/.composer/vendor/bin$PATH"
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
