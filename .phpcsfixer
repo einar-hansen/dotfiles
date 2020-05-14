@@ -1,7 +1,5 @@
 <?php
 
-file_put_contents('/Users/sk/.dotfiles/test.txt', 'hei');
-
 return PhpCsFixer\Config::create()
     ->setUsingCache(true)
     ->setRules([
