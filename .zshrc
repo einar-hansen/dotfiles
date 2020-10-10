@@ -93,3 +93,11 @@ source $DOTFILES/path.zsh
 
 [ -f $HOME/.aliases ] && source $HOME/.aliases
 [ -f $HOME/.fzf.zsh ] && source $HOME/.fzf.zsh
+
+# For compilers to find krb5 you may need to set:
+export LDFLAGS="-L/usr/local/opt/krb5/lib"
+export CPPFLAGS="-I/usr/local/opt/krb5/include"
+
+# For pkg-config to find krb5 you may need to set:
+export PKG_CONFIG_PATH="/usr/local/opt/krb5/lib/pkgconfig:/usr/local/opt/openssl@1.1/lib/pkgconfig"
+export COMPOSER_MEMORY_LIMIT=-1
