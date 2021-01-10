@@ -11,8 +11,9 @@ alias sites="cd $HOME/Sites"
 # Laravel
 alias pa="php artisan"
 alias pams="php artisan migrate:fresh --seed"
-alias tinker="php artisan tinker"
 alias phpunit="vendor/phpunit/phpunit/phpunit"
+alias sail='bash vendor/bin/sail'
+alias tinker="php artisan tinker"
 
 # PHP
 alias cfresh="rm -rf vendor/ composer.lock && composer i"
@@ -22,22 +23,22 @@ alias nfresh="rm -rf node_modules/ package-lock.json && npm install"
 alias watch="npm run watch"
 
 # Git
-alias gc="git commit -m "
 alias gac="git add . && git commit --no-edit"
-alias gs="git status"
-alias gsid="git show"
-alias gl="git log --oneline --decorate --color"
+alias gc="git commit -m "
 alias gcom="git checkout master"
+alias gl="git log --oneline --decorate --color"
+alias glog="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 alias gnb="git checkout -b"
 alias gp="git push"
+alias gs="git status"
+alias gsid="git show"
 alias nah="git reset --hard && git clean -df"
-alias glog="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 
 # CRON
 alias addcron="crontab ~/.cronjobs"
 alias editcron="vi ~/.cronjobs"
-alias viewcron="crontab -l"
 alias removecron="crontab -r"
+alias viewcron="crontab -l"
 
 # Hash
 alias computesha256='openssl dgst -sha256'
