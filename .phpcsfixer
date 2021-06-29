@@ -1,44 +1,43 @@
 <?php
 
-return PhpCsFixer\Config::create()
-    ->setUsingCache(true)
+$config = new PhpCsFixer\Config();
+return $config
+    ->setUsingCache(false)
     ->setRules([
-        '@PSR2' => true,
-        'array_syntax' => [
-            'syntax' => 'short',
-        ],
+        '@PSR12' => true,
+        'array_syntax' => ['syntax' => 'short'],
         'binary_operator_spaces' => true,
         'braces' => [
             'allow_single_line_closure' => false,
+            'allow_single_line_anonymous_class_with_empty_body' => true,
             'position_after_functions_and_oop_constructs' => 'next',
             'position_after_control_structures' => 'same',
             'position_after_anonymous_constructs' => 'same',
         ],
-        'blank_line_after_opening_tag' => true,
-        'blank_line_before_statement' => true,
-        'class_definition' => true,
-        'class_attributes_separation' => [
-            'elements' => ['method'],
+        'blank_line_before_statement' => [
+            'statements' => ['break', 'continue', 'declare', 'return', 'throw', 'try'],
         ],
+        'class_attributes_separation' => [
+            'elements' => [
+                'method' => 'one',
+            ],
+        ],
+        'class_definition' => true,
         'concat_space' => [
             'spacing' => 'none',
         ],
-        'declare_equal_normalize' => [
-            'space' => 'none',
-        ],
+        'constant_case' => true,
         'elseif' => true,
         'explicit_indirect_variable' => true,
         'explicit_string_variable' => true,
         'function_typehint_space' => true,
+        'global_namespace_import' => true,
         'linebreak_after_opening_tag' => true,
-        'lowercase_cast' => true,
-        'lowercase_constants' => true,
-        'lowercase_static_reference' => true,
-        'method_argument_space' => true,
-        'new_with_braces' => true,
-        'no_blank_lines_after_class_opening' => true,
+        'method_argument_space' => [
+            'on_multiline' => 'ensure_fully_multiline',
+            'keep_multiple_spaces_after_comma' => true,
+        ],
         'no_extra_blank_lines' => false,
-        'no_leading_import_slash' => true,
         'no_singleline_whitespace_before_semicolons' => true,
         'no_spaces_after_function_name' => true,
         'no_spaces_inside_parenthesis' => true,
@@ -48,11 +47,8 @@ return PhpCsFixer\Config::create()
         'no_useless_else' => true,
         'no_useless_return' => true,
         'no_whitespace_before_comma_in_array' => true,
-        'no_whitespace_in_blank_line' => true,
+        'not_operator_with_successor_space' => true,
         'object_operator_without_whitespace' => true,
-        'ordered_class_elements' => [
-            'order' => ['use_trait'],
-        ],
         'ordered_imports' => [
             'imports_order' => [
                 'class',
@@ -61,27 +57,20 @@ return PhpCsFixer\Config::create()
             ],
             'sort_algorithm' => 'alpha',
         ],
-
+        'phpdoc_scalar' => true,
+        'phpdoc_single_line_var_spacing' => true,
+        'phpdoc_var_without_name' => true,
         'php_unit_method_casing' => [
             'case' => 'snake_case',
         ],
-        'return_type_declaration' => [
-            'space_before' => 'none',
-        ],
-        'short_scalar_cast' => true,
-        'single_blank_line_before_namespace' => true,
         'single_blank_line_at_eof' => true,
-        'single_line_after_imports' => true,
         'single_import_per_statement' => false,
+        'single_line_after_imports' => true,
         'single_quote' => true,
-        'ternary_operator_spaces' => true,
-        'ternary_to_null_coalescing' => true,
         'standardize_not_equals' => true,
-        'trailing_comma_in_multiline_array' => true,
+        'ternary_to_null_coalescing' => true,
+        'trailing_comma_in_multiline' => true,
         'trim_array_spaces' => true,
         'unary_operator_spaces' => true,
-        'visibility_required' => [
-            'elements' => ['const', 'method', 'property'],
-        ],
         'whitespace_after_comma_in_array' => true,
     ]);
