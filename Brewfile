@@ -15,7 +15,6 @@ brew 'ffmpeg'
 brew 'fzf'
 brew 'gifsicle'
 brew 'git'
-brew 'gnupg2'
 brew 'grep'
 brew 'httpie'
 brew 'jq'
@@ -44,22 +43,12 @@ brew 'argon2'
 
 # Apps
 cask 'aerial'
-cask 'dropbox'
 cask 'github'
-cask 'gpg-suite'
 cask 'slack'
 cask 'sublime-text'
 cask 'tableplus'
-cask 'telegram-desktop'
-cask 'tor-browser'
+cask 'telegram-lite'
 cask 'vlc'
-
-# Quicklook - extends finder
-cask 'qlcolorcode'
-cask 'qlmarkdown'
-cask 'quicklook-json'
-cask 'quicklook-csv'
-cask 'qlstephen'
 
 # Fonts
 cask 'font-lato'
@@ -75,7 +64,8 @@ cask 'font-source-serif-pro'
 mas 'Giphy Capture', id: 668208984
 mas 'Keynote', id: 409183694
 mas 'LastPass', id: 926036361
-mas 'NordVPN', id: 1116599239
-mas 'Spark - Email App by Readdle', id: 1176895641
+mas 'NordVPN', id: 905953485
+mas 'Spark', id: 1176895641
+mas 'Telegram Lite', id: 946399090
 mas 'The Unarchiver', id: 425424353
-mas 'Tweetbot', id: 1384080005
+mas 'Twitter', id: 1482454543
