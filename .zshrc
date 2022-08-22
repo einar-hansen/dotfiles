@@ -1,6 +1,7 @@
 # Path to your dotfiles.
 export DOTFILES=$HOME/.dotfiles
-export PATH="/usr/local/sbin:/usr/local/bin:$HOME/.composer/vendor/bin:$PATH"
+export PATH="/usr/local/sbin:/usr/local/bin:$HOME/.composer/vendor/bin:$HOME/development/flutter/bin:$HOME/.pub-cache/bin:$PATH"
+export JAVA_HOME="/usr/local/Cellar/openjdk/18.0.1"
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
@@ -103,7 +104,7 @@ export PKG_CONFIG_PATH="/usr/local/opt/krb5/lib/pkgconfig:/usr/local/opt/openssl
 export COMPOSER_MEMORY_LIMIT=-1
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/google-cloud-sdk/path.zsh.inc"; fi
+if [ -f '/Users/einar/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/einar/google-cloud-sdk/path.zsh.inc'; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/google-cloud-sdk/completion.zsh.inc"; fi
+if [ -f '/Users/einar/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/einar/google-cloud-sdk/completion.zsh.inc'; fi
