@@ -9,10 +9,7 @@ alias library="cd $HOME/Library"
 alias sites="cd $HOME/Sites"
 
 # Laravel
-alias pa="php artisan"
-alias pams="php artisan migrate:fresh --seed"
 alias phpunit="vendor/phpunit/phpunit/phpunit"
-alias sail='bash vendor/bin/sail'
 alias tinker="php artisan tinker"
 
 # PHP
@@ -24,8 +21,8 @@ alias watch="npm run watch"
 
 # Git
 alias gac="git add . && git commit --no-edit"
-alias gc="git commit -m "
-alias gcom="git checkout master"
+alias gc="git commit "
+alias gcom="git checkout orgin main"
 alias gl="git log --oneline --decorate --color"
 alias glog="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 alias gnb="git checkout -b"
@@ -35,10 +32,18 @@ alias gsid="git show"
 alias nah="git reset --hard && git clean -df"
 
 # CRON
-alias addcron="crontab ~/.cronjobs"
-alias editcron="vi ~/.cronjobs"
-alias removecron="crontab -r"
-alias viewcron="crontab -l"
+alias acron="crontab ~/.cronjobs"
+alias ecron="vi ~/.cronjobs"
+alias rcron="crontab -r"
+alias vcron="crontab -l"
+
+# Docker
+alias dcls="docker container ls"
+alias dcrm="docker container rm"
+alias dvls="docker volume ls"
+alias dvrm="docker volume rm"
+alias dils="docker image ls"
+alias dirm="docker image rm"
 
 # Hash
 alias computesha256='openssl dgst -sha256'

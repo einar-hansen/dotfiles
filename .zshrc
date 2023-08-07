@@ -1,6 +1,6 @@
 # Path to your dotfiles.
 export DOTFILES=$HOME/.dotfiles
-export PATH="/usr/local/sbin:/usr/local/bin:$HOME/.composer/vendor/bin:$HOME/development/flutter/bin:$HOME/.pub-cache/bin:$PATH"
+export PATH="/usr/local/sbin:/usr/local/bin:$HOME/.composer/vendor/bin:$HOME/development/flutter/bin:$HOME/.pub-cache/bin:/Applications/PhpStorm.app/Contents/MacOS:$PATH"
 export JAVA_HOME="/usr/local/Cellar/openjdk/18.0.1"
 
 # If you come from bash you might have to change your $PATH.
@@ -102,9 +102,16 @@ export CPPFLAGS="-I/usr/local/opt/krb5/include"
 # For pkg-config to find krb5 you may need to set:
 export PKG_CONFIG_PATH="/usr/local/opt/krb5/lib/pkgconfig:/usr/local/opt/openssl@1.1/lib/pkgconfig"
 export COMPOSER_MEMORY_LIMIT=-1
+export PHP_CS_FIXER_IGNORE_ENV=1
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/Users/einar/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/einar/google-cloud-sdk/path.zsh.inc'; fi
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/einar/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/einar/google-cloud-sdk/completion.zsh.inc'; fi
+
+function git-clean-local(){
+    git fetch -p && for branch in $(git for-each-ref --format '%(refname) %(upstream:track)' refs/heads | awk '$2 == "[gone]" {sub("refs/heads/", "", $1); print $1}'); do git branch -D $branch; done
+}
+
+export EDITOR="vi"
