@@ -73,8 +73,6 @@ source $ZSH/oh-my-zsh.sh
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
-
-
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
@@ -95,20 +93,8 @@ source $DOTFILES/path.zsh
 [ -f $HOME/.aliases ] && source $HOME/.aliases
 [ -f $HOME/.fzf.zsh ] && source $HOME/.fzf.zsh
 
-# For compilers to find krb5 you may need to set:
-export LDFLAGS="-L/usr/local/opt/krb5/lib"
-export CPPFLAGS="-I/usr/local/opt/krb5/include"
-
-# For pkg-config to find krb5 you may need to set:
-export PKG_CONFIG_PATH="/usr/local/opt/krb5/lib/pkgconfig:/usr/local/opt/openssl@1.1/lib/pkgconfig"
 export COMPOSER_MEMORY_LIMIT=-1
 export PHP_CS_FIXER_IGNORE_ENV=1
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/einar/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/einar/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/einar/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/einar/google-cloud-sdk/completion.zsh.inc'; fi
 
 function git-clean-local(){
     git fetch -p && for branch in $(git for-each-ref --format '%(refname) %(upstream:track)' refs/heads | awk '$2 == "[gone]" {sub("refs/heads/", "", $1); print $1}'); do git branch -D $branch; done

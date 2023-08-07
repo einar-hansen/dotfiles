@@ -1,18 +1,3 @@
-togif() {
-    input="$1"
-    output="$2"
-    if [[ -z "$input" ]]
-    then
-        echo "Please set \$input"
-    elif [[ -z "$output" ]]
-    then
-        echo "Please set \$output"
-    else
-        ffmpeg -i "$input" -s 600x400 -pix_fmt rgb24 -r 10 -f gif - | gifsicle --optimize=3 --delay=3 > "$output"
-    fi
-}
-
-
 updatemac(){
     echo "- Running \"brew update\"..."
 
@@ -38,18 +23,4 @@ updatemac(){
         brew upgrade
         updatemac
     fi
-}
-
-gacp() {
-    input="$1"
-    git add --all
-    if [ "$input" = "" ]
-    then
-        # echo "No message"
-        git commit -m "Quick commit"
-    else
-        # echo "Commit with message $input"
-        git commit -m "$input"
-    fi
-    git push
 }

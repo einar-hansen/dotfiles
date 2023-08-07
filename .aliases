@@ -8,10 +8,6 @@ alias dotfiles="cd $DOTFILES"
 alias library="cd $HOME/Library"
 alias sites="cd $HOME/Sites"
 
-# Laravel
-alias phpunit="vendor/phpunit/phpunit/phpunit"
-alias tinker="php artisan tinker"
-
 # PHP
 alias cfresh="rm -rf vendor/ composer.lock && composer i"
 
