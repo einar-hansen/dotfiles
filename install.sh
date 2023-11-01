@@ -4,7 +4,7 @@ echo "Setting up your Mac..."
 
 # Check for Homebrew and install if we don't have it
 if test ! $(which brew); then
-  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
 # Update Homebrew recipes
@@ -14,14 +14,8 @@ brew update
 brew tap homebrew/bundle
 brew bundle
 
-# Install PHP extensions with PECL
-pecl install memcached imagick
-
 # Install global Composer packages
-/usr/local/bin/composer global require laravel/installer laravel/valet
-
-# Install Laravel Valet
-$HOME/.composer/vendor/bin/valet install
+/usr/local/bin/composer global require laravel/installer
 
 # Create a Sites directory
 # This is a default directory for macOS user accounts but doesn't comes pre-installed
@@ -30,5 +24,3 @@ mkdir $HOME/Sites
 # Removes .zshrc from $HOME (if it exists) and symlinks the .zshrc file from the .dotfiles
 rm -rf $HOME/.zshrc
 ln -s $HOME/.dotfiles/.zshrc $HOME/.zshrc
-
-composer global require friendsofphp/php-cs-fixer
