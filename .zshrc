@@ -1,13 +1,15 @@
 # Path to your dotfiles.
 export DOTFILES=$HOME/.dotfiles
-export PATH="/usr/local/sbin:/usr/local/bin:$HOME/.composer/vendor/bin:$HOME/development/flutter/bin:$HOME/.pub-cache/bin:$PATH"
+export PATH="/usr/local/sbin:/usr/local/bin:$HOME/.auth0:$HOME/.composer/vendor/bin:/opt/homebrew/bin:$PATH"
 export JAVA_HOME="/usr/local/Cellar/openjdk/18.0.1"
+export ZSH_DISABLE_COMPFIX=true
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Enable completions
 autoload -Uz compinit && compinit
+autoload -U +X bashcompinit && bashcompinit
 
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
@@ -33,7 +35,6 @@ ZSH_THEME="robbyrussell"
 # Uncomment the following line to disable colors in ls.
 # DISABLE_LS_COLORS="true"
 DISABLE_UPDATE_PROMPT=true
-
 
 # Uncomment the following line to disable auto-setting terminal title.
 # DISABLE_AUTO_TITLE="true"
@@ -73,8 +74,6 @@ source $ZSH/oh-my-zsh.sh
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
-
-
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
@@ -89,8 +88,6 @@ export LANG=en_US.UTF-8
 # Example aliases
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 source $DOTFILES/.aliases
-source $DOTFILES/.helpers
-source $DOTFILES/path.zsh
 
 [ -f $HOME/.aliases ] && source $HOME/.aliases
 [ -f $HOME/.fzf.zsh ] && source $HOME/.fzf.zsh
@@ -103,8 +100,4 @@ export CPPFLAGS="-I/usr/local/opt/krb5/include"
 export PKG_CONFIG_PATH="/usr/local/opt/krb5/lib/pkgconfig:/usr/local/opt/openssl@1.1/lib/pkgconfig"
 export COMPOSER_MEMORY_LIMIT=-1
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/einar/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/einar/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/einar/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/einar/google-cloud-sdk/completion.zsh.inc'; fi
+complete -o nospace -C /opt/homebrew/bin/terraform terraform
