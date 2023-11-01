@@ -1,6 +1,6 @@
 # Shortcuts
-alias aliasconfig="vi ~/.aliases"
-alias copyssh="pbcopy < $HOME/.ssh/id_rsa.pub"
+alias aliasconfig="vi $HOME/.aliases"
+alias copyssh="pbcopy < $HOME/.ssh/id_ed25519.pub"
 alias reloadcli="source $HOME/.zshrc"
 
 # Directories
@@ -8,27 +8,32 @@ alias dotfiles="cd $DOTFILES"
 alias library="cd $HOME/Library"
 alias sites="cd $HOME/Sites"
 
-# Laravel
-alias pa="php artisan"
-alias pams="php artisan migrate:fresh --seed"
-alias phpunit="vendor/phpunit/phpunit/phpunit"
-alias sail='bash vendor/bin/sail'
-alias tinker="php artisan tinker"
-
 # PHP
-alias cfresh="rm -rf vendor/ composer.lock && composer i"
+alias cfresh="rm -rf vendor/ composer.lock"
+
+# Terraform
+alias tf="terraform"
+alias tfa="terraform apply"
+alias tff="terraform fmt"
+alias tfi="terraform init"
+alias tfiu="terraform init -upgrade"
+alias tfp="terraform plan"
+alias tfs="terraform state"
+alias tfw="terraform workspace"
+alias tfwn="terraform workspace new"
+alias tfws="terraform workspace select"
 
 # JS
-alias nfresh="rm -rf node_modules/ package-lock.json && npm install"
-alias watch="npm run watch"
+alias nfresh="rm -rf node_modules/ package-lock.json"
 
 # Git
-alias gac="git add . && git commit --no-edit"
-alias gc="git commit -m "
-alias gcom="git checkout master"
+alias gac="git add . && git commit"
+alias gc="git commit"
+alias gcp="git checkout -"
+alias gcb="git checkout -b"
+alias gcm="git checkout main"
 alias gl="git log --oneline --decorate --color"
 alias glog="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
-alias gnb="git checkout -b"
 alias gp="git push"
 alias gs="git status"
 alias gsid="git show"
