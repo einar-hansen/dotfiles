@@ -1,6 +1,6 @@
 # Shortcuts
-alias aliasconfig="vi ~/.aliases"
-alias copyssh="pbcopy < $HOME/.ssh/id_rsa.pub"
+alias aliasconfig="vi $HOME/.aliases"
+alias copyssh="pbcopy < $HOME/.ssh/id_ed25519.pub"
 alias reloadcli="source $HOME/.zshrc"
 
 # Directories
