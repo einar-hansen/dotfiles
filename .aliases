@@ -40,10 +40,10 @@ alias gsid="git show"
 alias nah="git reset --hard && git clean -df"
 
 # CRON
-alias addcron="crontab ~/.cronjobs"
-alias editcron="vi ~/.cronjobs"
-alias removecron="crontab -r"
-alias viewcron="crontab -l"
+alias acron="crontab ~/.cronjobs"
+alias ecron="vi ~/.cronjobs"
+alias rcron="crontab -r"
+alias vcron="crontab -l"
 
 # Hash
 alias computesha256='openssl dgst -sha256'
