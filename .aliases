@@ -11,6 +11,18 @@ alias sites="cd $HOME/Sites"
 # PHP
 alias cfresh="rm -rf vendor/ composer.lock"
 
+# Terraform
+alias tf="terraform"
+alias tfa="terraform apply"
+alias tff="terraform fmt"
+alias tfi="terraform init"
+alias tfiu="terraform init -upgrade"
+alias tfp="terraform plan"
+alias tfs="terraform state"
+alias tfw="terraform workspace"
+alias tfwn="terraform workspace new"
+alias tfws="terraform workspace select"
+
 # JS
 alias nfresh="rm -rf node_modules/ package-lock.json"
 
