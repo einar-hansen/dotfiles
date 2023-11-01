@@ -77,27 +77,15 @@ export LANG=en_US.UTF-8
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
-# ssh
-# export SSH_KEY_PATH="~/.ssh/rsa_id"
+function git-clean-local(){
+    git fetch -p && for branch in $(git for-each-ref --format '%(refname) %(upstream:track)' refs/heads | awk '$2 == "[gone]" {sub("refs/heads/", "", $1); print $1}'); do git branch -D $branch; done
+}
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias ohmyzsh="mate ~/.oh-my-zsh"
 source $DOTFILES/.aliases
 
 [ -f $HOME/.aliases ] && source $HOME/.aliases
 [ -f $HOME/.fzf.zsh ] && source $HOME/.fzf.zsh
 
-# For compilers to find krb5 you may need to set:
-export LDFLAGS="-L/usr/local/opt/krb5/lib"
-export CPPFLAGS="-I/usr/local/opt/krb5/include"
-
-# For pkg-config to find krb5 you may need to set:
-export PKG_CONFIG_PATH="/usr/local/opt/krb5/lib/pkgconfig:/usr/local/opt/openssl@1.1/lib/pkgconfig"
 export COMPOSER_MEMORY_LIMIT=-1
 
 complete -o nospace -C /opt/homebrew/bin/terraform terraform
