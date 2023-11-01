@@ -45,6 +45,16 @@ alias ecron="vi ~/.cronjobs"
 alias rcron="crontab -r"
 alias vcron="crontab -l"
 
+# Docker
+alias dcls="docker container ls"
+alias dcrm="docker container rm"
+alias deit="docker exec -it"
+alias dils="docker image ls"
+alias dirm="docker image rm"
+alias drit="docker run -it --rm"
+alias dvls="docker volume ls"
+alias dvrm="docker volume rm"
+
 # Hash
 alias computesha256='openssl dgst -sha256'
 alias computesha512='openssl dgst -sha512'
