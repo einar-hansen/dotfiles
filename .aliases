@@ -9,11 +9,10 @@ alias library="cd $HOME/Library"
 alias sites="cd $HOME/Sites"
 
 # PHP
-alias cfresh="rm -rf vendor/ composer.lock && composer i"
+alias cfresh="rm -rf vendor/ composer.lock"
 
 # JS
-alias nfresh="rm -rf node_modules/ package-lock.json && npm install"
-alias watch="npm run watch"
+alias nfresh="rm -rf node_modules/ package-lock.json"
 
 # Git
 alias gac="git add . && git commit --no-edit"
