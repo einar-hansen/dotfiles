@@ -10,6 +10,7 @@ alias sites="cd $HOME/Sites"
 
 # PHP
 alias cfresh="rm -rf vendor/ composer.lock"
+alias vapor="php vendor/bin/vapor"
 
 # Terraform
 alias tf="terraform"
@@ -45,7 +46,11 @@ alias ecron="vi ~/.cronjobs"
 alias rcron="crontab -r"
 alias vcron="crontab -l"
 
-# Docker
+# Docker Compose
+alias dcd="docker compose down"
+alias dcu="docker compose up"
+alias dcud="docker compose up -d"
+alias dce="docker compose exec"
 alias dcls="docker container ls"
 alias dcrm="docker container rm"
 alias deit="docker exec -it"
