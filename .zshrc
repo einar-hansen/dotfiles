@@ -3,9 +3,7 @@ export DOTFILES=$HOME/.dotfiles
 export PATH="/usr/local/sbin:/usr/local/bin:$HOME/.auth0:$HOME/.composer/vendor/bin:/opt/homebrew/bin:$PATH"
 export JAVA_HOME="/usr/local/Cellar/openjdk/18.0.1"
 export ZSH_DISABLE_COMPFIX=true
-
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Enable completions
 autoload -Uz compinit && compinit
