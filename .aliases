@@ -1,5 +1,4 @@
 # Shortcuts
-alias aliasconfig="vi $HOME/.aliases"
 alias copyssh="pbcopy < $HOME/.ssh/id_ed25519.pub"
 alias reloadcli="source $HOME/.zshrc"
 
@@ -12,20 +11,12 @@ alias sites="cd $HOME/Sites"
 alias cfresh="rm -rf vendor/ composer.lock"
 alias vapor="php vendor/bin/vapor"
 
-# Terraform
-alias tf="terraform"
-alias tfa="terraform apply"
-alias tff="terraform fmt"
-alias tfi="terraform init"
-alias tfiu="terraform init -upgrade"
-alias tfp="terraform plan"
-alias tfs="terraform state"
-alias tfw="terraform workspace"
-alias tfwn="terraform workspace new"
-alias tfws="terraform workspace select"
-
 # JS
 alias nfresh="rm -rf node_modules/ package-lock.json"
+
+# Hash
+alias computesha256='openssl dgst -sha256'
+alias computesha512='openssl dgst -sha512'
 
 # Git
 alias gac="git add . && git commit"
@@ -39,12 +30,6 @@ alias gp="git push"
 alias gs="git status"
 alias gsid="git show"
 alias nah="git reset --hard && git clean -df"
-
-# CRON
-alias acron="crontab ~/.cronjobs"
-alias ecron="vi ~/.cronjobs"
-alias rcron="crontab -r"
-alias vcron="crontab -l"
 
 # Docker Compose
 alias dcd="docker compose down"
@@ -60,6 +45,14 @@ alias drit="docker run -it --rm"
 alias dvls="docker volume ls"
 alias dvrm="docker volume rm"
 
-# Hash
-alias computesha256='openssl dgst -sha256'
-alias computesha512='openssl dgst -sha512'
+# Terraform
+alias tf="terraform"
+alias tfa="terraform apply"
+alias tff="terraform fmt"
+alias tfi="terraform init"
+alias tfiu="terraform init -upgrade"
+alias tfp="terraform plan"
+alias tfs="terraform state"
+alias tfw="terraform workspace"
+alias tfwn="terraform workspace new"
+alias tfws="terraform workspace select"
