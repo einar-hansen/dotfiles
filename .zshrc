@@ -85,6 +85,7 @@ source $DOTFILES/.aliases
 [ -f $HOME/.env ] && source $HOME/.env
 [ -f $HOME/.fzf.zsh ] && source $HOME/.fzf.zsh
 [ -f $DOTFILES/gaac.sh ] && source $DOTFILES/gaac.sh
+[ -f $DOTFILES/gpt.sh ] && source $DOTFILES/gpt.sh
 
 export COMPOSER_MEMORY_LIMIT=-1
 
