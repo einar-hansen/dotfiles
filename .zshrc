@@ -91,12 +91,11 @@ export COMPOSER_MEMORY_LIMIT=-1
 complete -o nospace -C /opt/homebrew/bin/terraform terraform
 export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 
-# Herd injected NVM configuration
+# Herd injected configuration
 export NVM_DIR="/Users/einar/Library/Application Support/Herd/config/nvm"
 
 [[ -f "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh" ]] && builtin source "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh"
 
-# Herd injected PHP binary.
 export PATH="/Users/einar/Library/Application Support/Herd/bin/":$PATH
 
 # Herd injected PHP 8.3 configuration.
