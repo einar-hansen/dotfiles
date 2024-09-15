@@ -98,5 +98,4 @@ export NVM_DIR="/Users/einar/Library/Application Support/Herd/config/nvm"
 
 export PATH="/Users/einar/Library/Application Support/Herd/bin/":$PATH
 
-# Herd injected PHP 8.3 configuration.
 export HERD_PHP_83_INI_SCAN_DIR="/Users/einar/Library/Application Support/Herd/config/php/83/"
