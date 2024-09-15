@@ -82,8 +82,25 @@ function git-clean-local(){
 source $DOTFILES/.aliases
 
 [ -f $HOME/.aliases ] && source $HOME/.aliases
+[ -f $HOME/.env ] && source $HOME/.env
 [ -f $HOME/.fzf.zsh ] && source $HOME/.fzf.zsh
+[ -f $DOTFILES/gaac.sh ] && source $DOTFILES/gaac.sh
 
 export COMPOSER_MEMORY_LIMIT=-1
 
 complete -o nospace -C /opt/homebrew/bin/terraform terraform
+export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+
+
+# Herd injected NVM configuration
+export NVM_DIR="/Users/einar/Library/Application Support/Herd/config/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+
+[[ -f "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh" ]] && builtin source "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh"
+
+# Herd injected PHP binary.
+export PATH="/Users/einar/Library/Application Support/Herd/bin/":$PATH
+
+
+# Herd injected PHP 8.3 configuration.
+export HERD_PHP_83_INI_SCAN_DIR="/Users/einar/Library/Application Support/Herd/config/php/83/"
