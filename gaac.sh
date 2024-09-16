@@ -182,13 +182,13 @@ $GIT_DIFF"
     echo $RESPONSE
     echo "----"
 
-    # Extract the AI-generated content
-    AI_CONTENT=$(echo "$RESPONSE" | jq -r '.choices[0].message.content' | sed 's/\\n/\n/g')
+    # Escape control characters in the response and extract the AI-generated content
+    AI_CONTENT=$(echo "$RESPONSE" | perl -pe's/[\x00-\x1F]/ sprintf "\\u%04X", ord $& /eg' | jq -r '.choices[0].message.content')
 
-    # Extract the title if it starts with "### Pull Request Title"
+    # Extract the title and body
     if [[ "$AI_CONTENT" == "### Pull Request Title"* ]]; then
-        PR_TITLE=$(echo "$AI_CONTENT" | sed -n '/^### Pull Request Title/,/^###/p' | sed '1d;$d' | tr -d '\n')
-        PR_BODY=$(echo "$AI_CONTENT" | sed '1,/^### Pull Request Description/d')
+        PR_TITLE=$(echo "$AI_CONTENT" | sed -n '/^### Pull Request Title/,/^###/p' | sed '1d;/^###/d' | tr -d '\n')
+        PR_BODY=$(echo "$AI_CONTENT" | sed -n '/^### Pull Request Body/,$p' | sed '1d')
     else
         # Fallback to the previous method if the specific format is not found
         PR_TITLE=$(echo "$AI_CONTENT" | sed -n '1s/^[[:space:]]*//;1s/[[:space:]]*$//;1p')
