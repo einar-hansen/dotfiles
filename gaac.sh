@@ -45,14 +45,17 @@ $GIT_DIFF"
   echo "Full API Response:"
   echo "$RESPONSE"
   echo "-------------------------"
+
   # Escape newlines in the response using Perl
   ESCAPED_RESPONSE=$(echo "$RESPONSE" | perl -pe 's/\n/\\n/g')
+
   # Check for API errors
-  ERROR_MSG=$(echo "$ESCAPED_RESPONSE" | jq -r '.error.message // empty')
+  ERROR_MSG=$(echo "$RESPONSE" | jq -r '.error.message // empty')
   if [[ -n "$ERROR_MSG" ]]; then
-    echo "Error from local API: $ERROR_MSG"
+    echo "Error from API: $ERROR_MSG"
     return 1
   fi
+
   # Extract the commit message, handling the custom format
   COMMIT_MESSAGE=$(echo "$ESCAPED_RESPONSE" | jq -r '.choices[0].message.content' | perl -pe 's/<.*?>//g' | tr -d '\n' | xargs)
   if [[ -z "$COMMIT_MESSAGE" ]]; then
@@ -178,24 +181,17 @@ $GIT_DIFF"
       -d "$JSON_PAYLOAD"
     )
 
-    echo "----RAW RESPONSE----"
-    echo $RESPONSE
-    echo "----"
+    # Directly parse the JSON to extract AI-generated content
+    AI_CONTENT=$(echo "$RESPONSE" | jq -r '.choices[0].message.content')
 
-    # Format and parse the JSON
-    PARSED_RESPONSE=$(echo "$RESPONSE" | sed 's/$/\\n/' | tr -d '\n' | sed -e 's/"/"/g' -e 's/"/"/g' | sed '$ s/\\n$//' | jq .)
-
-    # Extract the AI-generated content
-    AI_CONTENT=$(echo "$PARSED_RESPONSE" | jq -r '.choices[0].message.content')
-
-    # Extract the title and body
+    # Proceed to extract the PR title and body from AI_CONTENT
     if [[ "$AI_CONTENT" == *"### Pull Request Title"* ]]; then
         PR_TITLE=$(echo "$AI_CONTENT" | sed -n '/^### Pull Request Title/,/^###/p' | sed '1d;/^###/d' | tr -d '\n')
-        PR_BODY=$(echo "$AI_CONTENT" | sed -n '/^### Pull Request Body/,$p' | sed '1d')
+        PR_BODY=$(echo "$AI_CONTENT" | sed -n '/^### Pull Request Description/,$p' | sed '1d')
     else
-        # Fallback to the previous method if the specific format is not found
-        PR_TITLE=$(echo "$AI_CONTENT" | sed -n '1s/^[[:space:]]*//;1s/[[:space:]]*$//;1p')
-        PR_BODY=$(echo "$AI_CONTENT" | sed '1d' | sed '/./,$!d' | sed -e :a -e '/^\n*$/{$d;N;ba' -e '}')
+        # Fallback method
+        PR_TITLE=$(echo "$AI_CONTENT" | sed -n '1p')
+        PR_BODY=$(echo "$AI_CONTENT" | sed '1d')
     fi
 
     # Truncate the title if it's too long
