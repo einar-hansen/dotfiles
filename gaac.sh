@@ -183,11 +183,17 @@ $GIT_DIFF"
     echo "----"
 
     # Extract the AI-generated content
-    AI_CONTENT=$(echo "$RESPONSE" | perl -0777 -ne 'print $1 if /"content":\s*"(.*?)"/s' | perl -pe 's/\\n/\n/g; s/\\"/"/g;')
+    AI_CONTENT=$(echo "$RESPONSE" | jq -r '.choices[0].message.content' | sed 's/\\n/\n/g')
 
-    # Extract the title (first line) and body (rest of the content)
-    PR_TITLE=$(echo "$AI_CONTENT" | sed -n '1s/^[[:space:]]*//;1s/[[:space:]]*$//;1p')
-    PR_BODY=$(echo "$AI_CONTENT" | sed '1d' | sed '/./,$!d' | sed -e :a -e '/^\n*$/{$d;N;ba' -e '}')
+    # Extract the title if it starts with "### Pull Request Title"
+    if [[ "$AI_CONTENT" == "### Pull Request Title"* ]]; then
+        PR_TITLE=$(echo "$AI_CONTENT" | sed -n '/^### Pull Request Title/,/^###/p' | sed '1d;$d' | tr -d '\n')
+        PR_BODY=$(echo "$AI_CONTENT" | sed '1,/^### Pull Request Description/d')
+    else
+        # Fallback to the previous method if the specific format is not found
+        PR_TITLE=$(echo "$AI_CONTENT" | sed -n '1s/^[[:space:]]*//;1s/[[:space:]]*$//;1p')
+        PR_BODY=$(echo "$AI_CONTENT" | sed '1d' | sed '/./,$!d' | sed -e :a -e '/^\n*$/{$d;N;ba' -e '}')
+    fi
 
     # Truncate the title if it's too long
     if [ ${#PR_TITLE} -gt 72 ]; then
