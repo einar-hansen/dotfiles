@@ -72,7 +72,7 @@ $GIT_DIFF"
   fi
 
   # Extract the commit message
-  COMMIT_MESSAGE=AI_CONTENT=$(echo "$CLEAN_RESPONSE" | jq -r '.choices[0].message.content')
+  COMMIT_MESSAGE=$(echo "$CLEAN_RESPONSE" | jq -r '.choices[0].message.content')
 
   if [[ -z "$COMMIT_MESSAGE" ]]; then
     echo "Failed to generate commit message or received empty message."
@@ -197,6 +197,9 @@ $GIT_DIFF"
       -H "Authorization: Bearer $OPENAI_API_KEY" \
       -d "$JSON_PAYLOAD"
     )
+
+    echo "$RESPONSE" > response.json
+    echo "$RESPONSE" > response2.json
 
     echo "----RAW RESPONSE----"
     echo "$RESPONSE"
