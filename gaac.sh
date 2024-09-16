@@ -205,7 +205,7 @@ $GIT_DIFF"
     # Clean control characters from the response
     CLEAN_RESPONSE=$(clean_json_response "$RESPONSE")
 
-    # Check if the cleaned response is valid JSON
+    # Check if the cleaned response is valid
     if ! printf '%s\n' "$CLEAN_RESPONSE" | jq empty >/dev/null 2>&1; then
       echo "Received invalid JSON from the API."
       return 1
