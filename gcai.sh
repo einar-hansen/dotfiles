@@ -154,13 +154,16 @@ COMMIT_MESSAGE=$(openai api chat.completions.create \
     fi
 
     # Display the generated title and body
-    echo "---START-TITLE---"
-    echo "$PR_TITLE"
-    echo "---END-TITLE---"
     echo
-    echo "---START-BODY---"
+    echo "Generated title:"
+    echo "-------------------------"
+    echo "$PR_TITLE"
+    echo "-------------------------"
+    echo
+    echo "Generated body:"
+    echo "-------------------------"
     echo "$PR_BODY"
-    echo "---END-BODY---"
+    echo "-------------------------"
     echo
 
     # Ask user if they want to use the AI-generated content or enter their own
