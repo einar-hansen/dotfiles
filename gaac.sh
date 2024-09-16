@@ -1,13 +1,20 @@
 gaac() {
+  # Function to clean control characters from JSON response
+  clean_json_response() {
+    echo "$1" | tr -d '\000-\011\013\014\016-\037'
+  }
+
   # Check if there are staged files
   STAGED_FILES=$(git diff --cached --name-only)
   if [[ -z "$STAGED_FILES" ]]; then
     echo "No files are staged for commit."
     return 1
   fi
+
   # Get the diff of staged files
   GIT_DIFF=$(git diff --cached)
-  # Build the prompt for the local API
+
+  # Build the prompt for the API
   SYSTEM_PROMPT="You are a helpful assistant that writes extremely concise and effective git commit messages based on changes provided. Your commit messages should be no longer than 50 characters if possible, and never exceed 72 characters."
   USER_PROMPT="Generate a concise git commit message for the following changes. Use the imperative mood, and start with a capital letter. Do not use punctuation at the end. Here are some examples of good commit messages:
 - Add user authentication feature
@@ -35,42 +42,52 @@ $GIT_DIFF"
       temperature: 0.5
     }'
   )
-  # Call the local API
+
+  # Call the OpenAI API
   RESPONSE=$(curl -s https://api.openai.com/v1/chat/completions \
     -H 'Content-Type: application/json' \
     -H "Authorization: Bearer $OPENAI_API_KEY" \
     -d "$JSON_PAYLOAD"
   )
+
   # Print the full response for debugging
   echo "Full API Response:"
   echo "$RESPONSE"
   echo "-------------------------"
 
-  # Escape newlines in the response using Perl
-  ESCAPED_RESPONSE=$(echo "$RESPONSE" | perl -pe 's/\n/\\n/g')
+  # Clean control characters from the response
+  CLEAN_RESPONSE=$(clean_json_response "$RESPONSE")
+
+  # Check if the cleaned response is valid JSON
+  if ! printf '%s\n' "$CLEAN_RESPONSE" | jq empty >/dev/null 2>&1; then
+    echo "Received invalid JSON from the API."
+    return 1
+  fi
 
   # Check for API errors
-  ERROR_MSG=$(echo "$RESPONSE" | jq -r '.error.message // empty')
+  ERROR_MSG=$(printf '%s\n' "$CLEAN_RESPONSE" | jq -r '.error.message // empty')
   if [[ -n "$ERROR_MSG" ]]; then
     echo "Error from API: $ERROR_MSG"
     return 1
   fi
 
-  # Extract the commit message, handling the custom format
-  COMMIT_MESSAGE=$(echo "$ESCAPED_RESPONSE" | jq -r '.choices[0].message.content' | perl -pe 's/<.*?>//g' | tr -d '\n' | xargs)
+  # Extract the commit message
+  COMMIT_MESSAGE=$(printf '%s\n' "$CLEAN_RESPONSE" | jq -r '.choices[0].message.content' | tr -d '\r' | xargs)
+
   if [[ -z "$COMMIT_MESSAGE" ]]; then
     echo "Failed to generate commit message or received empty message."
     echo "Would you like to enter a commit message manually? (y/n)"
-    read -k1 MANUAL_INPUT
+    read -r -n 1 MANUAL_INPUT
     echo
     if [[ "$MANUAL_INPUT" == "y" ]]; then
       echo "Enter your commit message:"
-      read COMMIT_MESSAGE
+      read -r COMMIT_MESSAGE
     else
       echo "Commit canceled."
       return 1
     fi
   fi
+
   # Display the commit message and staged files
   echo
   echo "Generated commit message:"
@@ -85,7 +102,7 @@ $GIT_DIFF"
   echo
   # Prompt for user confirmation or editing
   echo "Press 'e' to edit the commit message, 'c' to cancel, or any other key to confirm and commit:"
-  read -k1 USER_INPUT
+  read -r -n 1 USER_INPUT
   echo
   if [[ "$USER_INPUT" == "c" ]]; then
     echo "Commit canceled."
@@ -104,7 +121,7 @@ $GIT_DIFF"
 
   # Ask if the user wants to create a pull request
   echo "Do you want to create a pull request? (y/n)"
-  read -k1 CREATE_PR
+  read -r -n 1 CREATE_PR
   echo
 
   if [[ "$CREATE_PR" == "y" ]]; then
@@ -120,7 +137,7 @@ $GIT_DIFF"
       echo "1) Push to origin/$CURRENT_BRANCH"
       echo "2) Push to origin/main"
       echo "3) Enter a custom branch name"
-      read -k1 PUSH_OPTION
+      read -r -n 1 PUSH_OPTION
       echo
 
       case $PUSH_OPTION in
@@ -133,7 +150,7 @@ $GIT_DIFF"
           ;;
         3)
           echo "Enter the name of the remote branch:"
-          read REMOTE_BRANCH
+          read -r REMOTE_BRANCH
           git push -u origin "$CURRENT_BRANCH:$REMOTE_BRANCH"
           CURRENT_BRANCH="$REMOTE_BRANCH"
           ;;
@@ -157,7 +174,7 @@ $GIT_DIFF"
 
     # Generate PR title and body using AI
     SYSTEM_PROMPT="You are a helpful assistant that generates concise and informative pull request titles and descriptions based on git commit history. For the title, provide a brief summary of the overall changes. For the body, provide a more detailed explanation of the changes, including any notable additions, modifications, or potential impacts. Use markdown formatting for the body."
-    USER_PROMPT="Generate a pull request title and body for the follxowing commit history:\n\n$COMMIT_HISTORY"
+    USER_PROMPT="Generate a pull request title and body for the following commit history:\n\n$COMMIT_HISTORY"
 
     JSON_PAYLOAD=$(jq -n \
       --arg model "gpt-4o-mini" \
@@ -174,23 +191,43 @@ $GIT_DIFF"
       }'
     )
 
-    # Call the local API with a timeout
+    # Call the OpenAI API
     RESPONSE=$(curl -s https://api.openai.com/v1/chat/completions \
       -H 'Content-Type: application/json' \
       -H "Authorization: Bearer $OPENAI_API_KEY" \
       -d "$JSON_PAYLOAD"
     )
 
-    # Directly parse the JSON to extract AI-generated content
-    AI_CONTENT=$(echo "$RESPONSE" | jq -r '.choices[0].message.content')
+    echo "----RAW RESPONSE----"
+    echo "$RESPONSE"
+    echo "----"
 
-    # Proceed to extract the PR title and body from AI_CONTENT
+    # Clean control characters from the response
+    CLEAN_RESPONSE=$(clean_json_response "$RESPONSE")
+
+    # Check if the cleaned response is valid JSON
+    if ! printf '%s\n' "$CLEAN_RESPONSE" | jq empty >/dev/null 2>&1; then
+      echo "Received invalid JSON from the API."
+      return 1
+    fi
+
+    # Check for API errors
+    ERROR_MSG=$(printf '%s\n' "$CLEAN_RESPONSE" | jq -r '.error.message // empty')
+    if [[ -n "$ERROR_MSG" ]]; then
+      echo "Error from API: $ERROR_MSG"
+      return 1
+    fi
+
+    # Extract the AI-generated content
+    AI_CONTENT=$(printf '%s\n' "$CLEAN_RESPONSE" | jq -r '.choices[0].message.content')
+
+    # Extract the title and body
     if [[ "$AI_CONTENT" == *"### Pull Request Title"* ]]; then
-        PR_TITLE=$(echo "$AI_CONTENT" | sed -n '/^### Pull Request Title/,/^###/p' | sed '1d;/^###/d' | tr -d '\n')
+        PR_TITLE=$(echo "$AI_CONTENT" | sed -n '/^### Pull Request Title/,/^###/p' | sed '1d;/^###/d' | tr -d '\r\n')
         PR_BODY=$(echo "$AI_CONTENT" | sed -n '/^### Pull Request Description/,$p' | sed '1d')
     else
-        # Fallback method
-        PR_TITLE=$(echo "$AI_CONTENT" | sed -n '1p')
+        # Fallback to the previous method if the specific format is not found
+        PR_TITLE=$(echo "$AI_CONTENT" | sed -n '1p' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
         PR_BODY=$(echo "$AI_CONTENT" | sed '1d')
     fi
 
@@ -209,12 +246,12 @@ $GIT_DIFF"
 
     # Ask user if they want to use the AI-generated content or enter their own
     echo "Do you want to use this AI-generated title and body? (y/n)"
-    read -k1 USE_AI_CONTENT
+    read -r -n 1 USE_AI_CONTENT
     echo
 
     if [[ "$USE_AI_CONTENT" != "y" ]]; then
         echo "Enter a title for the pull request:"
-        read PR_TITLE
+        read -r PR_TITLE
         echo "Enter a body for the pull request (press Ctrl+D when finished):"
         PR_BODY=$(cat)
     fi
