@@ -182,11 +182,14 @@ $GIT_DIFF"
     echo $RESPONSE
     echo "----"
 
-    # Escape control characters in the response and extract the AI-generated content
-    AI_CONTENT=$(echo "$RESPONSE" | perl -pe's/[\x00-\x1F]/ sprintf "\\u%04X", ord $& /eg' | jq -r '.choices[0].message.content')
+    # Format and parse the JSON response
+    PARSED_RESPONSE=$(echo "$RESPONSE" | sed 's/$/\\n/' | tr -d '\n' | sed -e 's/"/"/g' -e 's/"/"/g' | sed '$ s/\\n$//' | jq .)
+
+    # Extract the AI-generated content
+    AI_CONTENT=$(echo "$PARSED_RESPONSE" | jq -r '.choices[0].message.content')
 
     # Extract the title and body
-    if [[ "$AI_CONTENT" == "### Pull Request Title"* ]]; then
+    if [[ "$AI_CONTENT" == *"### Pull Request Title"* ]]; then
         PR_TITLE=$(echo "$AI_CONTENT" | sed -n '/^### Pull Request Title/,/^###/p' | sed '1d;/^###/d' | tr -d '\n')
         PR_BODY=$(echo "$AI_CONTENT" | sed -n '/^### Pull Request Body/,$p' | sed '1d')
     else
