@@ -1,4 +1,4 @@
-gaac() {
+gcai() {
   # Check if there are staged files
   STAGED_FILES=$(git diff --cached --name-only)
   if [[ -z "$STAGED_FILES" ]]; then

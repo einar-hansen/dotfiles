@@ -83,7 +83,7 @@ source $DOTFILES/.aliases
 
 [ -f $HOME/.aliases ] && source $HOME/.aliases
 [ -f $HOME/.fzf.zsh ] && source $HOME/.fzf.zsh
-[ -f $DOTFILES/gaa.sh ] && source $DOTFILES/gaa.sh
+[ -f $DOTFILES/gcai.sh ] && source $DOTFILES/gcai.sh
 [ -f $DOTFILES/gpt.sh ] && source $DOTFILES/gpt.sh
 [ -f $HOME/.env ] && source $HOME/.env
 
