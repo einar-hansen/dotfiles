@@ -77,7 +77,7 @@ $GIT_DIFF"
   if [[ -z "$COMMIT_MESSAGE" ]]; then
     echo "Failed to generate commit message or received empty message."
     echo "Would you like to enter a commit message manually? (y/n)"
-    read -r -n 1 MANUAL_INPUT
+    read -k1 MANUAL_INPUT
     echo
     if [[ "$MANUAL_INPUT" == "y" ]]; then
       echo "Enter your commit message:"
@@ -102,7 +102,7 @@ $GIT_DIFF"
   echo
   # Prompt for user confirmation or editing
   echo "Press 'e' to edit the commit message, 'c' to cancel, or any other key to confirm and commit:"
-  read -r -n 1 USER_INPUT
+  read -k1 USER_INPUT
   echo
   if [[ "$USER_INPUT" == "c" ]]; then
     echo "Commit canceled."
@@ -121,7 +121,7 @@ $GIT_DIFF"
 
   # Ask if the user wants to create a pull request
   echo "Do you want to create a pull request? (y/n)"
-  read -r -n 1 CREATE_PR
+  read -k1 CREATE_PR
   echo
 
   if [[ "$CREATE_PR" == "y" ]]; then
@@ -137,7 +137,7 @@ $GIT_DIFF"
       echo "1) Push to origin/$CURRENT_BRANCH"
       echo "2) Push to origin/main"
       echo "3) Enter a custom branch name"
-      read -r -n 1 PUSH_OPTION
+      read -k1 PUSH_OPTION
       echo
 
       case $PUSH_OPTION in
@@ -205,7 +205,7 @@ $GIT_DIFF"
     # Clean control characters from the response
     CLEAN_RESPONSE=$(clean_json_response "$RESPONSE")
 
-    # Check if the cleaned response is valid
+    # Check if the cleaned response is valid JSON
     if ! printf '%s\n' "$CLEAN_RESPONSE" | jq empty >/dev/null 2>&1; then
       echo "Received invalid JSON from the API."
       return 1
@@ -246,7 +246,7 @@ $GIT_DIFF"
 
     # Ask user if they want to use the AI-generated content or enter their own
     echo "Do you want to use this AI-generated title and body? (y/n)"
-    read -r -n 1 USE_AI_CONTENT
+    read -k1 USE_AI_CONTENT
     echo
 
     if [[ "$USE_AI_CONTENT" != "y" ]]; then
