@@ -182,7 +182,7 @@ $GIT_DIFF"
     echo $RESPONSE
     echo "----"
 
-    # Format and parse the JSON response
+    # Format and parse the JSON
     PARSED_RESPONSE=$(echo "$RESPONSE" | sed 's/$/\\n/' | tr -d '\n' | sed -e 's/"/"/g' -e 's/"/"/g' | sed '$ s/\\n$//' | jq .)
 
     # Extract the AI-generated content
