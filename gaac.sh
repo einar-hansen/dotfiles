@@ -1,8 +1,8 @@
 gaac() {
-  # Function to clean control characters from JSON response
-  clean_json_response() {
-    echo "$1" | tr -d '\000-\011\013\014\016-\037'
-  }
+  # Function to clean control characters from JSON response and escape unescaped newlines
+  # clean_json_response() {
+  #   echo "$1" | perl -0pe 's/\\n/\\\\n/g; s/([^\\])\n/\1\\n/g;'
+  # }
 
   # Check if there are staged files
   STAGED_FILES=$(git diff --cached --name-only)
@@ -55,11 +55,11 @@ $GIT_DIFF"
   echo "$RESPONSE"
   echo "-------------------------"
 
-  # Clean control characters from the response
-  CLEAN_RESPONSE=$(clean_json_response "$RESPONSE")
+  # Clean control characters and escape unescaped newlines in the response
+  CLEAN_RESPONSE="$RESPONSE"
 
-  # Check if the cleaned response is valid JSON
-  if ! printf '%s\n' "$CLEAN_RESPONSE" | jq empty >/dev/null 2>&1; then
+  # Check if the response is valid JSON
+  if ! echo "$CLEAN_RESPONSE" | jq empty >/dev/null 2>&1; then
     echo "Received invalid JSON from the API."
     return 1
   fi
@@ -72,7 +72,7 @@ $GIT_DIFF"
   fi
 
   # Extract the commit message
-  COMMIT_MESSAGE=$(printf '%s\n' "$CLEAN_RESPONSE" | jq -r '.choices[0].message.content' | tr -d '\r' | xargs)
+  COMMIT_MESSAGE=AI_CONTENT=$(echo "$CLEAN_RESPONSE" | jq -r '.choices[0].message.content')
 
   if [[ -z "$COMMIT_MESSAGE" ]]; then
     echo "Failed to generate commit message or received empty message."
@@ -202,11 +202,11 @@ $GIT_DIFF"
     echo "$RESPONSE"
     echo "----"
 
-    # Clean control characters from the response
-    CLEAN_RESPONSE=$(clean_json_response "$RESPONSE")
+    # Clean control characters and escape unescaped newlines in the response
+    CLEAN_RESPONSE="$RESPONSE"
 
-    # Check if the cleaned response is valid JSON
-    if ! printf '%s\n' "$CLEAN_RESPONSE" | jq empty >/dev/null 2>&1; then
+    # Check if the response is valid JSON
+    if ! echo "$CLEAN_RESPONSE" | jq empty >/dev/null 2>&1; then
       echo "Received invalid JSON from the API."
       return 1
     fi
@@ -219,7 +219,7 @@ $GIT_DIFF"
     fi
 
     # Extract the AI-generated content
-    AI_CONTENT=$(printf '%s\n' "$CLEAN_RESPONSE" | jq -r '.choices[0].message.content')
+    AI_CONTENT=$(echo "$CLEAN_RESPONSE" | jq -r '.choices[0].message.content')
 
     # Extract the title and body
     if [[ "$AI_CONTENT" == *"### Pull Request Title"* ]]; then
