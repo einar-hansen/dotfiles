@@ -90,3 +90,4 @@ source $DOTFILES/.aliases
 export COMPOSER_MEMORY_LIMIT=-1
 
 complete -o nospace -C /opt/homebrew/bin/terraform terraform
+export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
