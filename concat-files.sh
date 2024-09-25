@@ -77,24 +77,20 @@ should_ignore_file() {
 # Function to check if a file should be included based on options
 should_include_file() {
     local file="$1"
-
     # Check if file should be ignored
     if [ ${#IGNORE_PATTERNS[@]} -ne 0 ] && should_ignore_file "$file"; then
         return 1
     fi
-
     # Check for hidden files
     if $IGNORE_HIDDEN && [[ $(basename "$file") == .* ]]; then
         return 1
     fi
-
     # Check for git-committed files
     if $GIT_ONLY; then
         if ! git ls-files --error-unmatch "$file" &> /dev/null; then
             return 1
         fi
     fi
-
     # Check for docker-available files
     if $DOCKER_ONLY; then
         if docker build -f - . -t temp_image <<< "FROM scratch
@@ -104,20 +100,47 @@ COPY $file /tmp/" &> /dev/null; then
             return 1
         fi
     fi
-
     return 0
 }
 
-# Loop through all files in the directory
-find "$SOURCE_DIR" -type f | while read -r file; do
-    if should_include_file "$file" && is_text_file "$file"; then
-        echo "Processing: $file"
-        echo "--- Content of $file ---" >> "$OUTPUT_FILE"
-        cat "$file" >> "$OUTPUT_FILE"
-        echo -e "\n\n" >> "$OUTPUT_FILE"
-    else
-        echo "Skipping file: $file"
-    fi
-done
+# Create a temporary file to store included files
+TEMP_FILE=$(mktemp)
 
-echo "All readable text files have been concatenated into $OUTPUT_FILE"
+# Count total files
+total_files=$(find "$SOURCE_DIR" -type f | wc -l)
+
+echo "Starting file processing..."
+
+# Use a subshell to process files and update the counter in real-time
+(
+    processed_files=0
+    while read -r file; do
+        ((processed_files++))
+        echo -ne "Processing files: $processed_files/$total_files\r"
+        if should_include_file "$file" && is_text_file "$file"; then
+            echo "--- Content of $file ---" >> "$OUTPUT_FILE"
+            cat "$file" >> "$OUTPUT_FILE"
+            echo -e "\n\n" >> "$OUTPUT_FILE"
+            echo "$file" >> "$TEMP_FILE"
+        fi
+    done < <(find "$SOURCE_DIR" -type f)
+)
+
+# Count the number of included files
+included_files=$(wc -l < "$TEMP_FILE")
+processed_files=$total_files
+skipped_files=$((total_files - included_files))
+
+echo -e "\nProcessing complete."
+echo "Total files: $total_files"
+echo "Processed files: $processed_files"
+echo "Skipped files: $skipped_files"
+echo "Included files: $included_files"
+
+echo -e "\nList of included files:"
+cat "$TEMP_FILE"
+
+echo -e "\nAll readable text files have been concatenated into $OUTPUT_FILE"
+
+# Clean up temporary file
+rm "$TEMP_FILE"
