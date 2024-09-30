@@ -1,9 +1,11 @@
 # Path to your dotfiles.
 export DOTFILES=$HOME/.dotfiles
-export PATH="/usr/local/sbin:/usr/local/bin:$HOME/.auth0:$HOME/.composer/vendor/bin:/opt/homebrew/bin:$PATH"
+export PATH="/usr/local/sbin:/usr/local/bin:$HOME/.composer/vendor/bin:/opt/homebrew/bin:$PATH"
 export JAVA_HOME="/usr/local/Cellar/openjdk/18.0.1"
 export ZSH_DISABLE_COMPFIX=true
-# If you come from bash you might have to change your $PATH.
+
+# Homebrew
+export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 
 # Enable completions
 autoload -Uz compinit && compinit
@@ -89,5 +91,13 @@ source $DOTFILES/.aliases
 
 export COMPOSER_MEMORY_LIMIT=-1
 
-complete -o nospace -C /opt/homebrew/bin/terraform terraform
-export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+# Herd injected PHP binaries.
+export PATH="/Users/einar/Library/Application Support/Herd/bin/":$PATH
+export HERD_PHP_83_INI_SCAN_DIR="/Users/einar/Library/Application Support/Herd/config/php/83/"
+export HERD_PHP_84_INI_SCAN_DIR="/Users/einar/Library/Application Support/Herd/config/php/84/"
+
+# Herd injected NVM configuration
+export NVM_DIR="/Users/einar/Library/Application Support/Herd/config/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+
+[[ -f "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh" ]] && builtin source "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh"
