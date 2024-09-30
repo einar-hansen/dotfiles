@@ -98,44 +98,81 @@ $GIT_DIFF"
 }
 
 # Function for creating a pull request
-ai_pr() {
+gcai_pr() {
   # Get the current branch name
   CURRENT_BRANCH=$(git branch --show-current)
 
-  # Check if the branch has an upstream branch
-  UPSTREAM=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null)
+  # List of protected branches
+  PROTECTED_BRANCHES=("main" "master" "develop" "release")
 
-  if [[ -z "$UPSTREAM" ]]; then
-    echo "No upstream branch is set for $CURRENT_BRANCH."
-    echo "Choose an option:"
-    echo "1) Push to origin/$CURRENT_BRANCH"
-    echo "2) Push to origin/main"
-    echo "3) Enter a custom branch name"
-    read -k1 PUSH_OPTION
+  # Check if the current branch is protected
+  if [[ " ${PROTECTED_BRANCHES[@]} " =~ " ${CURRENT_BRANCH} " ]]; then
+    echo "You are on a protected branch: $CURRENT_BRANCH"
+    echo "Let's create a new branch for your changes."
+
+    # Get the commit history for the current branch
+    COMMIT_HISTORY=$(git log -n 5 --pretty=format:"%s%n%b")
+
+    # Generate branch name using AI
+    SYSTEM_PROMPT="You are a helpful assistant that generates concise and descriptive git branch names based on commit messages. The branch name should be in kebab-case, start with a verb (e.g., add, update, fix, refactor), and be no longer than 50 characters. Provide only the branch name without any additional text or explanation."
+    USER_PROMPT="Generate a git branch name based on the following commit messages:\n\n$COMMIT_HISTORY"
+
+    SUGGESTED_BRANCH=$(openai api chat.completions.create \
+      -m gpt-4o-mini \
+      -g system "$SYSTEM_PROMPT" \
+      -g user "$USER_PROMPT" \
+      --temperature 0.7)
+
+    echo "Suggested branch name: $SUGGESTED_BRANCH"
+    echo "Do you want to use this branch name? (y/n)"
+    read -k1 USE_SUGGESTED_BRANCH
     echo
 
-    case $PUSH_OPTION in
-      1)
-        git push -u origin "$CURRENT_BRANCH"
-        ;;
-      2)
-        git push -u origin "$CURRENT_BRANCH:main"
-        CURRENT_BRANCH="main"
-        ;;
-      3)
-        echo "Enter the name of the remote branch:"
-        read -r REMOTE_BRANCH
-        git push -u origin "$CURRENT_BRANCH:$REMOTE_BRANCH"
-        CURRENT_BRANCH="$REMOTE_BRANCH"
-        ;;
-      *)
-        echo "Invalid option. Aborting."
-        return 1
-        ;;
-    esac
+    if [[ "$USE_SUGGESTED_BRANCH" != "y" ]]; then
+      echo "Enter a new branch name:"
+      read -r NEW_BRANCH
+    else
+      NEW_BRANCH=$SUGGESTED_BRANCH
+    fi
+
+    # Create and switch to the new branch
+    git checkout -b "$NEW_BRANCH"
+    echo "Created and switched to new branch: $NEW_BRANCH"
+
+    # Push the new branch to origin
+    git push -u origin "$NEW_BRANCH"
+    CURRENT_BRANCH="$NEW_BRANCH"
   else
-    # Push the current branch to its upstream
-    git push
+    # Check if the branch has an upstream branch
+    UPSTREAM=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null)
+
+    if [[ -z "$UPSTREAM" ]]; then
+      echo "No upstream branch is set for $CURRENT_BRANCH."
+      echo "Choose an option:"
+      echo "1) Push to origin/$CURRENT_BRANCH"
+      echo "2) Enter a custom branch name"
+      read -k1 PUSH_OPTION
+      echo
+
+      case $PUSH_OPTION in
+        1)
+          git push -u origin "$CURRENT_BRANCH"
+          ;;
+        2)
+          echo "Enter the name of the remote branch:"
+          read -r REMOTE_BRANCH
+          git push -u origin "$CURRENT_BRANCH:$REMOTE_BRANCH"
+          CURRENT_BRANCH="$REMOTE_BRANCH"
+          ;;
+        *)
+          echo "Invalid option. Aborting."
+          return 1
+          ;;
+      esac
+    else
+      # Push the current branch to its upstream
+      git push
+    fi
   fi
 
   # Get the repository URL
