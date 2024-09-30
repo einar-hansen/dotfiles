@@ -98,7 +98,7 @@ $GIT_DIFF"
 }
 
 # Function for creating a pull request
-gcai_pr() {
+ai_pr() {
   # Get the current branch name
   CURRENT_BRANCH=$(git branch --show-current)
 
@@ -114,7 +114,7 @@ gcai_pr() {
     COMMIT_HISTORY=$(git log -n 5 --pretty=format:"%s%n%b")
 
     # Generate branch name using AI
-    SYSTEM_PROMPT="You are a helpful assistant that generates concise and descriptive git branch names based on commit messages. The branch name should be in kebab-case, start with a verb (e.g., add, update, fix, refactor), and be no longer than 50 characters. Provide only the branch name without any additional text or explanation."
+    SYSTEM_PROMPT="You are a helpful assistant that generates concise and descriptive git branch names based on commit messages. The branch name should be in kebab-case, start with a verb (e.g., add, update, fix, refactor), and be no longer than 50 characters. Do not include 'feature/' or 'fix/' prefixes. Provide only the branch name without any additional text or explanation."
     USER_PROMPT="Generate a git branch name based on the following commit messages:\n\n$COMMIT_HISTORY"
 
     SUGGESTED_BRANCH=$(openai api chat.completions.create \
@@ -129,19 +129,38 @@ gcai_pr() {
     echo
 
     if [[ "$USE_SUGGESTED_BRANCH" != "y" ]]; then
-      echo "Enter a new branch name:"
+      echo "Enter a new branch name (without 'feature/' or 'fix/' prefix):"
       read -r NEW_BRANCH
     else
       NEW_BRANCH=$SUGGESTED_BRANCH
     fi
 
-    # Create and switch to the new branch
-    git checkout -b "$NEW_BRANCH"
-    echo "Created and switched to new branch: $NEW_BRANCH"
+    # Determine the prefix
+    echo "Is this a new feature (f) or a bugfix (b)?"
+    read -k1 BRANCH_TYPE
+    echo
+
+    case $BRANCH_TYPE in
+      f|F)
+        PREFIX="feature/"
+        ;;
+      b|B)
+        PREFIX="fix/"
+        ;;
+      *)
+        echo "Invalid option. Using no prefix."
+        PREFIX=""
+        ;;
+    esac
+
+    # Create and switch to the new branch with the appropriate prefix
+    FULL_BRANCH_NAME="${PREFIX}${NEW_BRANCH}"
+    git checkout -b "$FULL_BRANCH_NAME"
+    echo "Created and switched to new branch: $FULL_BRANCH_NAME"
 
     # Push the new branch to origin
-    git push -u origin "$NEW_BRANCH"
-    CURRENT_BRANCH="$NEW_BRANCH"
+    git push -u origin "$FULL_BRANCH_NAME"
+    CURRENT_BRANCH="$FULL_BRANCH_NAME"
   else
     # Check if the branch has an upstream branch
     UPSTREAM=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null)
@@ -159,10 +178,28 @@ gcai_pr() {
           git push -u origin "$CURRENT_BRANCH"
           ;;
         2)
-          echo "Enter the name of the remote branch:"
+          echo "Enter the name of the remote branch (without 'feature/' or 'fix/' prefix):"
           read -r REMOTE_BRANCH
-          git push -u origin "$CURRENT_BRANCH:$REMOTE_BRANCH"
-          CURRENT_BRANCH="$REMOTE_BRANCH"
+          echo "Is this a new feature (f) or a bugfix (b)?"
+          read -k1 BRANCH_TYPE
+          echo
+
+          case $BRANCH_TYPE in
+            f|F)
+              PREFIX="feature/"
+              ;;
+            b|B)
+              PREFIX="fix/"
+              ;;
+            *)
+              echo "Invalid option. Using no prefix."
+              PREFIX=""
+              ;;
+          esac
+
+          FULL_REMOTE_BRANCH="${PREFIX}${REMOTE_BRANCH}"
+          git push -u origin "$CURRENT_BRANCH:$FULL_REMOTE_BRANCH"
+          CURRENT_BRANCH="$FULL_REMOTE_BRANCH"
           ;;
         *)
           echo "Invalid option. Aborting."
