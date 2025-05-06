@@ -270,8 +270,27 @@ BODY:
   fi
 
   # Create the pull request using GitHub CLI
+  echo "Would you like to enable automerge for this PR? (y/n)"
+  read -k1 ENABLE_AUTOMERGE
+  echo
+
+  # Create the pull request using GitHub CLI
   if command -v gh &> /dev/null; then
-    gh pr create --title "$PR_TITLE" --body "$PR_BODY"
+    # Create the PR
+    PR_URL=$(gh pr create --title "$PR_TITLE" --body "$PR_BODY")
+
+    # Enable automerge if requested
+    if [[ "$ENABLE_AUTOMERGE" == "y" ]]; then
+      echo "Enabling automerge..."
+      gh pr merge --auto --squash "$PR_URL"
+
+      # Check if automerge was successfully enabled
+      if [ $? -eq 0 ]; then
+        echo "Automerge enabled successfully!"
+      else
+        echo "Failed to enable automerge. Please check repository settings and permissions."
+      fi
+    fi
 
     # Open the pull request in the browser
     gh pr view --web
