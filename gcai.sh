@@ -142,19 +142,19 @@ ai_pr() {
 
     case $BRANCH_TYPE in
       f|F)
-        PREFIX="feature/"
+        GCAIPREFIX="feature/"
         ;;
       b|B)
-        PREFIX="fix/"
+        GCAIPREFIX="fix/"
         ;;
       *)
         echo "Invalid option. Using no prefix."
-        PREFIX=""
+        GCAIPREFIX=""
         ;;
     esac
 
     # Create and switch to the new branch with the appropriate prefix
-    FULL_BRANCH_NAME="${PREFIX}${NEW_BRANCH}"
+    FULL_BRANCH_NAME="${GCAIPREFIX}${NEW_BRANCH}"
     git checkout -b "$FULL_BRANCH_NAME"
     echo "Created and switched to new branch: $FULL_BRANCH_NAME"
 
@@ -186,18 +186,18 @@ ai_pr() {
 
           case $BRANCH_TYPE in
             f|F)
-              PREFIX="feature/"
+              GCAIPREFIX="feature/"
               ;;
             b|B)
-              PREFIX="fix/"
+              GCAIPREFIX="fix/"
               ;;
             *)
               echo "Invalid option. Using no prefix."
-              PREFIX=""
+              GCAIPREFIX=""
               ;;
           esac
 
-          FULL_REMOTE_BRANCH="${PREFIX}${REMOTE_BRANCH}"
+          FULL_REMOTE_BRANCH="${GCAIPREFIX}${REMOTE_BRANCH}"
           git push -u origin "$CURRENT_BRANCH:$FULL_REMOTE_BRANCH"
           CURRENT_BRANCH="$FULL_REMOTE_BRANCH"
           ;;
