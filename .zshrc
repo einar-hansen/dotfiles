@@ -6,6 +6,11 @@ export ZSH_DISABLE_COMPFIX=true
 
 # Homebrew
 export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+export HOMEBREW_AUTO_UPDATE_SECS=86400  # Homebrew checks for updates once per day
+
+# Sqlite
+export PATH="/opt/homebrew/opt/sqlite/bin:$PATH"
+
 
 # Enable completions
 autoload -Uz compinit && compinit
@@ -101,3 +106,11 @@ export NVM_DIR="/Users/einar/Library/Application Support/Herd/config/nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
 [[ -f "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh" ]] && builtin source "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh"
+
+# pnpm
+export PNPM_HOME="/Users/einar/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end

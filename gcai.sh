@@ -142,19 +142,19 @@ ai_pr() {
 
     case $BRANCH_TYPE in
       f|F)
-        PREFIX="feature/"
+        GCAIPREFIX="feature/"
         ;;
       b|B)
-        PREFIX="fix/"
+        GCAIPREFIX="fix/"
         ;;
       *)
         echo "Invalid option. Using no prefix."
-        PREFIX=""
+        GCAIPREFIX=""
         ;;
     esac
 
     # Create and switch to the new branch with the appropriate prefix
-    FULL_BRANCH_NAME="${PREFIX}${NEW_BRANCH}"
+    FULL_BRANCH_NAME="${GCAIPREFIX}${NEW_BRANCH}"
     git checkout -b "$FULL_BRANCH_NAME"
     echo "Created and switched to new branch: $FULL_BRANCH_NAME"
 
@@ -186,18 +186,18 @@ ai_pr() {
 
           case $BRANCH_TYPE in
             f|F)
-              PREFIX="feature/"
+              GCAIPREFIX="feature/"
               ;;
             b|B)
-              PREFIX="fix/"
+              GCAIPREFIX="fix/"
               ;;
             *)
               echo "Invalid option. Using no prefix."
-              PREFIX=""
+              GCAIPREFIX=""
               ;;
           esac
 
-          FULL_REMOTE_BRANCH="${PREFIX}${REMOTE_BRANCH}"
+          FULL_REMOTE_BRANCH="${GCAIPREFIX}${REMOTE_BRANCH}"
           git push -u origin "$CURRENT_BRANCH:$FULL_REMOTE_BRANCH"
           CURRENT_BRANCH="$FULL_REMOTE_BRANCH"
           ;;
@@ -270,8 +270,27 @@ BODY:
   fi
 
   # Create the pull request using GitHub CLI
+  echo "Would you like to enable automerge for this PR? (y/n)"
+  read -k1 ENABLE_AUTOMERGE
+  echo
+
+  # Create the pull request using GitHub CLI
   if command -v gh &> /dev/null; then
-    gh pr create --title "$PR_TITLE" --body "$PR_BODY"
+    # Create the PR
+    PR_URL=$(gh pr create --title "$PR_TITLE" --body "$PR_BODY")
+
+    # Enable automerge if requested
+    if [[ "$ENABLE_AUTOMERGE" == "y" ]]; then
+      echo "Enabling automerge..."
+      gh pr merge --auto --squash "$PR_URL"
+
+      # Check if automerge was successfully enabled
+      if [ $? -eq 0 ]; then
+        echo "Automerge enabled successfully!"
+      else
+        echo "Failed to enable automerge. Please check repository settings and permissions."
+      fi
+    fi
 
     # Open the pull request in the browser
     gh pr view --web
